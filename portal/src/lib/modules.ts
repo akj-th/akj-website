@@ -49,7 +49,7 @@ export const MODULES: PortalModule[] = [
     name: "도면·모델 뷰어",
     group: "work",
     stage: 1,
-    status: "planned",
+    status: "building",
     summary: "CAD·라이노 없이 웹에서 DWG·3DM을 열어 보고 표시하는 곳",
     scope: [
       "3DM 뷰어 — rhino3dm으로 읽기, 큰 파일은 NAS에서 미리 가볍게 변환",

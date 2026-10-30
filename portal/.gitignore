@@ -1,6 +1,9 @@
 # dependencies
 /node_modules
 
+# node_modules 에서 복사해 오는 파일 (scripts/copy-rhino3dm.mjs)
+/public/rhino3dm/
+
 # next.js
 /.next/
 /out/

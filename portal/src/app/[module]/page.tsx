@@ -8,8 +8,11 @@ import { GROUPS, MODULES, getModule } from "@/lib/modules";
 
 export const dynamicParams = false;
 
+// 자기 페이지가 생긴 모듈은 자리 페이지를 만들지 않는다
+const HAS_PAGE = new Set(["viewer"]);
+
 export function generateStaticParams() {
-  return MODULES.map((m) => ({ module: m.slug }));
+  return MODULES.filter((m) => !HAS_PAGE.has(m.slug)).map((m) => ({ module: m.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/[module]">): Promise<Metadata> {
