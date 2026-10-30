@@ -1,11 +1,14 @@
-# ATELIER KJ 웹사이트 (시안)
+# ATELIER KJ 웹
 
-정적 사이트. 빌드 없음 — `index.html` + `projects.json` + `img/`.
+공개 사이트와 사내 포털을 함께 두는 저장소. 구조와 원칙은 [docs/architecture.md](docs/architecture.md).
 
-- `index.html` — 페이지 전체 (프로젝트 목록 데이터 `P`, 대표작 `FEATURED`는 스크립트 상단)
-- `projects.json` — 프로젝트 상세 페이지 본문·정보·이미지 목록
-- `img/` 대표 이미지, `img/p/` 상세 페이지 이미지
-- `logo.svg` — 모노그램 로고
+| 폴더 | 내용 | 로컬 확인 |
+|---|---|---|
+| `site/` | 공개 사이트 — 포트폴리오, 회사 소개. 정적, 빌드 없음 | `npx serve site` |
+| `portal/` | 사내 포털 — Next.js. 회사 NAS에서 운영 | `cd portal` → `npm install` → `npm run dev` |
+| `docs/` | 구조·원칙·정할 것 | — |
 
-로컬 확인: 이 폴더에서 `npx serve` 후 브라우저로 열기 (file://로 열면 projects.json을 못 읽음)
-배포: Cloudflare Pages — 이 저장소 연결, 빌드 명령 없음, 출력 폴더 `/`
+## 배포
+
+- `site/` → Cloudflare Pages. 이 저장소 연결, 빌드 명령 없음, **출력 폴더 `site`**
+- `portal/` → 회사 NAS Docker (NAS 구축 후). 공개 호스팅에 올리지 않는다

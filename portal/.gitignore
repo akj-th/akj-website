@@ -1,0 +1,19 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+
+# env files — 키는 커밋하지 않는다. 예시만 커밋
+.env*
+!.env.example
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
