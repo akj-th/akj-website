@@ -1,3 +1,7 @@
+<!DOCTYPE html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ATELIER KJ 웹사이트 시안</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +21,7 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
-body { background: var(--white); color: var(--black); font: 400 13px/1.55 var(--text); padding-inline: var(--pad); padding-block: 0; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--white); color: var(--black); font: 400 13px/1.55 var(--text); padding-inline: var(--pad); padding-block: 0; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
 :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 .kr { font-family: var(--kr); }
@@ -105,6 +109,19 @@ a { color: inherit; text-decoration: none; }
 .peek img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .peek.on { opacity: 1; }
 
+/* 랩: 직접 만드는 설계 도구 — 인덱스와 같은 흰 바탕, 번호는 표제란처럼 크게 */
+.lab { padding-block: clamp(40px, 6vw, 80px) clamp(60px, 8vw, 110px); }
+.lab-tag { font-weight: 500; }
+.lab-intro { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; padding-block: clamp(32px, 5vw, 64px); }
+.lab-intro .lbl { grid-column: 1 / span 3; font-weight: 500; }
+.lab-intro .statement { grid-column: 4 / -1; margin: 0; font: 400 clamp(24px, 3.2vw, 46px)/1.15 var(--display-kr); letter-spacing: -.01em; text-wrap: balance; word-break: keep-all; }
+.tools { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+.tool { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 8px 16px; align-content: start; border-top: 2px solid var(--black); padding-block: 14px 40px; }
+.tool-no { grid-row: span 3; font: 400 clamp(40px, 4.4vw, 64px)/.9 var(--display); }
+.tool-name { margin: 0; font: 400 clamp(26px, 3vw, 44px)/.95 var(--display); text-transform: uppercase; }
+.tool p { margin: 0; max-width: 46ch; color: #3d3d3b; font-size: 14px; line-height: 1.75; word-break: keep-all; }
+.tool-meta { color: var(--stone); font-weight: 500; }
+
 /* 스튜디오·연락처 */
 .studio { padding-block: clamp(60px, 9vw, 120px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 40px 16px; }
 .studio h2 { grid-column: 1 / -1; margin: 0; }
@@ -173,6 +190,9 @@ footer .lg svg { width: 100%; height: 100%; fill: var(--white); }
   .d-code { font-size: 28vw; }
   .d-pair .d-fig:nth-child(2) { margin-top: 16px; }
   .peek { display: none; }
+  .tools { grid-template-columns: minmax(0, 1fr); }
+  .lab-intro .lbl, .lab-intro .statement { grid-column: 1 / -1; }
+  .tool { grid-template-columns: 64px minmax(0, 1fr); }
   .panel .title .fit { font-size: 15vw; max-width: none; }
   .bar nav { gap: 14px; font-size: 16px; }
 }
@@ -183,7 +203,7 @@ footer .lg svg { width: 100%; height: 100%; fill: var(--white); }
 
 <header class="bar" id="bar">
   <a class="lg" href="#top" aria-label="처음으로" data-logo></a>
-  <nav aria-label="주요 메뉴"><a href="#projects">Projects</a><a href="#studio">Studio</a><a href="#contact">Contact</a></nav>
+  <nav aria-label="주요 메뉴"><a href="#projects">Projects</a><a href="#lab">Lab</a><a href="#studio">Studio</a><a href="#contact">Contact</a></nav>
 </header>
 
 <main id="top">
@@ -241,6 +261,43 @@ footer .lg svg { width: 100%; height: 100%; fill: var(--white); }
     <ul class="rows" id="rows"></ul>
   </section>
 
+  <section class="lab" id="lab" aria-labelledby="lab-h">
+    <div class="index-head">
+      <h2 id="lab-h"><span class="fit">Lab</span></h2>
+      <span class="kr lab-tag">직접 만드는 설계 도구</span>
+    </div>
+    <div class="lab-intro">
+      <span class="lbl">We build our own tools.</span>
+      <p class="statement">설계에서 되풀이되는 일을 도구로 만든다. 계산은 코드에게, 판단은 건축가에게.</p>
+    </div>
+    <ol class="tools">
+      <li class="tool">
+        <span class="tool-no num">01</span>
+        <h3 class="tool-name">AAD System</h3>
+        <p class="kr">대지·법규·사업성·매스를 하나의 프로젝트로 잇는 설계 검토 도구. 법규 수치는 코드가 계산하고, 숫자마다 근거 조문을 남긴다.</p>
+        <span class="tool-meta">Site · Code · Feasibility · Massing — In development, 2026</span>
+      </li>
+      <li class="tool">
+        <span class="tool-no num">02</span>
+        <h3 class="tool-name">Site Import</h3>
+        <p class="kr">주소 하나로 지형·항공사진·필지·주변 건물을 라이노 모델로 가져온다. 프로젝트마다 손으로 만들던 대지 컨텍스트를 대신한다.</p>
+        <span class="tool-meta">Rhino plug-in — In use, 2026</span>
+      </li>
+      <li class="tool">
+        <span class="tool-no num">03</span>
+        <h3 class="tool-name">Ramp Calculator</h3>
+        <p class="kr">층고와 경사로 형식을 넣으면 주차장법에 맞는 길이·폭·완화구간을 계산하고, 단면과 평면을 CAD 도면으로 내보낸다.</p>
+        <span class="tool-meta">Parking ramp · DXF — In use, 2026</span>
+      </li>
+      <li class="tool">
+        <span class="tool-no num">04</span>
+        <h3 class="tool-name">Minutes</h3>
+        <p class="kr">회의 녹음을 참석자별 할 일 중심의 회의록으로 정리한다. 녹음에 없는 담당과 기한은 지어내지 않는다.</p>
+        <span class="tool-meta">Meeting → Action items — In development, 2026</span>
+      </li>
+    </ol>
+  </section>
+
   <section class="studio dark" id="studio" aria-labelledby="st-h">
     <h2 id="st-h"><span class="fit" data-fit>Studio</span></h2>
     <div class="col"><h3>Kyung Jae Kim<span>김경재</span></h3><p class="kr">뉴욕·뉴저지 등록 건축사. 연세대 도시공학, 컬럼비아 건축대학원. Grimshaw 뉴욕에서 도하 신도시 마스터플랜과 공항·공공건물을, AWO에서 다양한 스케일의 작업을 이끌었다.</p></div>
@@ -254,7 +311,7 @@ footer .lg svg { width: 100%; height: 100%; fill: var(--white); }
     <div class="col contact"><h3>Phone</h3><div class="v num" id="c-tel">+82 10 2607 2315</div><button type="button" class="copy" data-copy="c-tel">Copy</button></div>
     <div class="col contact"><h3>Office</h3><div class="v" style="font:400 18px/1.5 var(--kr)">서울시 강남구 일원동 666-9 302호, 06343</div></div>
   </section>
-  <footer class="dark"><span class="lg" data-logo></span><span>Atelier KJ © 2026 · @atelierkj · 시안 v0.6</span></footer>
+  <footer class="dark"><span class="lg" data-logo></span><span>Atelier KJ © 2026 · @atelierkj · 시안 v0.7</span></footer>
 </main>
 
 <div class="peek" id="peek" aria-hidden="true"><img alt=""></div>
@@ -298,11 +355,21 @@ document.querySelectorAll('[data-logo]').forEach(el => el.innerHTML = LOGO);
 
 // 화면 폭에 꽉 차게 글자 크기 맞추기
 function fitAll() {
+  // 첫 화면 메뉴는 세 줄이 한 화면 높이 안에 들어오는 크기까지만 (넓은 화면에서 넘치지 않게)
+  const hero = document.querySelector('.hero');
+  const menuItems = document.querySelectorAll('.menu [data-fit]').length || 1;
+  const chrome = hero ? hero.querySelector('.hero-top').offsetHeight + hero.querySelector('.hero-bottom').offsetHeight + 90 : 0;
+  const menuCap = (innerHeight - chrome) / (menuItems * 0.86);
   document.querySelectorAll('[data-fit]').forEach(el => {
     const box = el.parentElement.clientWidth;
+    // 블록·grid 항목은 상자 폭이 곧 칸 폭이라 글자 폭을 못 잰다 — 글자 자체(Range)의 폭을 잰다
     el.style.fontSize = '100px';
-    const w = el.scrollWidth || 1;
-    el.style.fontSize = Math.floor(100 * box / w * 0.995) + 'px';
+    const r = document.createRange();
+    r.selectNodeContents(el);
+    const w = r.getBoundingClientRect().width || 1;
+    let size = 100 * box / w * 0.995;
+    if (el.closest('.menu')) size = Math.min(size, menuCap);
+    el.style.fontSize = Math.floor(size) + 'px';
   });
 }
 
@@ -453,7 +520,7 @@ if (window.gsap && window.ScrollTrigger && !reduce) {
   // 4) 큰 제목: 눌려 있다가 펴짐
   gsap.utils.toArray('.index-head .fit, .studio h2 .fit').forEach(el => gsap.fromTo(el, { scaleY: 0.35, transformOrigin: '50% 100%' }, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: el, start: 'top 95%', end: 'top 55%', scrub: true } }));
   // 5) 인덱스 행
-  ScrollTrigger.batch('.row', { start: 'top 94%', onEnter: els => gsap.fromTo(els, { y: 18 }, { y: 0, stagger: 0.035, duration: 0.45, ease: 'power3.out' }) });
+  ScrollTrigger.batch('.row, .tool', { start: 'top 94%', onEnter: els => gsap.fromTo(els, { y: 18 }, { y: 0, stagger: 0.035, duration: 0.45, ease: 'power3.out' }) });
 }
 if (location.hash.startsWith('#p/')) open(decodeURIComponent(location.hash.slice(3)));
 </script>
