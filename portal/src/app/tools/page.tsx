@@ -7,12 +7,12 @@ export const metadata: Metadata = { title: "건축 계산기" };
 
 const TOOLS = [
   {
-    href: "",
+    href: "/tools/ramp",
     icon: Route,
     name: "주차장 램프 계산기",
-    desc: "층고와 경사로 형식으로 법정 최소 길이·폭·곡선 반경을 구하고, 단면·평면을 DXF로 내보낸다.",
-    ready: false,
-    basis: "주차장법 시행규칙 제6조",
+    desc: "층고와 경사로 형식으로 법정 최소 길이·폭·곡선 반경·완화구간을 구하고, 단면·평면을 DXF로 내보낸다.",
+    ready: true,
+    basis: "주차장법 시행규칙 제6조, 별표 1",
   },
   {
     href: "",

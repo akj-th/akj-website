@@ -56,9 +56,9 @@ export const MODULES: PortalModule[] = [
     next: ["서버 NAS 이전", "포털 로그인·프로젝트 코드 연결"],
   },
   {
-    slug: "tools", name: "건축 계산기", group: "design", stage: 1, status: "demo",
+    slug: "tools", name: "건축 계산기", group: "design", stage: 1, status: "building",
     summary: "실무에서 반복하는 계산을 웹에서 바로 하는 작은 도구 모음",
-    next: ["주차장 램프 계산기 + DXF", "면적표 정리", "건폐율·용적률 개략 검토"],
+    next: ["면적표 정리", "건폐율·용적률 개략 검토 (AAD 법규 모듈)", "램프 계산기 — 나선형 다층 연속"],
   },
   {
     slug: "approvals", name: "결재", group: "office", stage: 2, status: "demo",
