@@ -8,17 +8,20 @@ import { APPROVALS, type Approval } from "@/data/approvals";
 import { CONTRACTS, type Contract, type ContractStatus } from "@/data/contracts";
 import { DEMO_TODAY } from "@/data/demo";
 import { MAILS } from "@/data/mail";
-import { MINUTES } from "@/data/minutes";
+import { MINUTES, type Minutes } from "@/data/minutes";
 
 interface DemoState {
   approvals: Approval[];
   contracts: Contract[];
+  /** 포털에서 새로 만든 회의록 (AI 정리 결과) */
+  minutes: Minutes[];
   actionsDone: Record<string, boolean>;
   mailRead: Record<string, boolean>;
   clock: Record<string, { in?: string; out?: string }>;
   approve: (id: string, me: string, comment?: string) => void;
   reject: (id: string, me: string, comment: string) => void;
   addApproval: (a: Approval) => void;
+  addMinutes: (m: Minutes) => void;
   toggleAction: (id: string) => void;
   readMail: (id: string) => void;
   clockIn: (time: string) => void;
@@ -30,6 +33,7 @@ interface DemoState {
 const seed = () => ({
   approvals: structuredClone(APPROVALS),
   contracts: structuredClone(CONTRACTS),
+  minutes: [] as Minutes[],
   actionsDone: Object.fromEntries(MINUTES.flatMap((m) => m.actions.map((a) => [a.id, a.done]))),
   mailRead: Object.fromEntries(MAILS.map((m) => [m.id, !m.unread])),
   clock: { [DEMO_TODAY]: { in: "08:52" } } as Record<string, { in?: string; out?: string }>,
@@ -65,6 +69,11 @@ export const useDemo = create<DemoState>()(
           }),
         })),
       addApproval: (a) => set((s) => ({ approvals: [a, ...s.approvals] })),
+      addMinutes: (m) =>
+        set((s) => ({
+          minutes: [m, ...s.minutes],
+          actionsDone: { ...s.actionsDone, ...Object.fromEntries(m.actions.map((a) => [a.id, a.done])) },
+        })),
       toggleAction: (id) => set((s) => ({ actionsDone: { ...s.actionsDone, [id]: !s.actionsDone[id] } })),
       readMail: (id) => set((s) => ({ mailRead: { ...s.mailRead, [id]: true } })),
       clockIn: (time) => set((s) => ({ clock: { ...s.clock, [DEMO_TODAY]: { in: time } } })),
@@ -89,7 +98,9 @@ export const useDemo = create<DemoState>()(
       storage: createJSONStorage(() => localStorage),
       // 서버 렌더와 첫 화면을 맞추려고 마운트 뒤에 불러온다 (DemoHydrator)
       skipHydration: true,
-      partialize: ({ approvals, contracts, actionsDone, mailRead, clock }) => ({ approvals, contracts, actionsDone, mailRead, clock }),
+      partialize: ({ approvals, contracts, minutes, actionsDone, mailRead, clock }) => ({ approvals, contracts, minutes, actionsDone, mailRead, clock }),
+      // 예전 저장본에 없는 필드는 처음 값으로 채운다
+      merge: (persisted, current) => ({ ...current, ...(persisted as Partial<DemoState>), minutes: (persisted as Partial<DemoState>)?.minutes ?? [] }),
     },
   ),
 );

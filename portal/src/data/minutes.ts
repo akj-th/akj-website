@@ -5,8 +5,10 @@ export interface ActionItem {
   /** 사내 직원 id 또는 외부 참석자 이름 */
   owner: string;
   task: string;
+  /** YYYY-MM-DD 또는 "기한 미정" 같은 글 */
   due: string;
   done: boolean;
+  output?: string;
 }
 
 export interface Minutes {
@@ -21,6 +23,13 @@ export interface Minutes {
   decisions: string[];
   actions: ActionItem[];
   source: string;
+  // AI 정리(회의록 스킬 형식)에서 오는 항목
+  distribute?: boolean;
+  items?: { title: string; rows: { label: string; text: string }[]; decision: string; open: string }[];
+  openItems?: { item: string; owner: string; due: string }[];
+  next?: string;
+  checks?: string[];
+  internalNotes?: string[];
 }
 
 export const MINUTES: Minutes[] = [

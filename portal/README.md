@@ -9,6 +9,16 @@ npm run dev     # http://localhost:3000
 npm run build
 ```
 
+## AI 회의록 (회의록 → 새 회의록)
+
+전사본을 `POST /api/minutes` 로 보내면 서버가 Claude(`claude-opus-5-5`)로 AKJ 회의록 규칙(akj-minutes 스킬과 같은 기준)에 맞춰 정리해 JSON으로 돌려준다.
+
+- 키: `.env.example` 을 `.env.local` 로 복사하고 `ANTHROPIC_API_KEY` 를 넣는다. 키는 서버에서만 읽는다
+- 키가 없으면 503과 설정 안내를 돌려주고, 화면에서 '예시 결과로 흐름 보기'(미리 쓴 예시, 실제 AI 출력 아님)로 흐름을 볼 수 있다
+- 규칙 프롬프트: `src/lib/minutes/prompt.ts` · 결과 형식(JSON 스키마): `src/lib/minutes/schema.ts`
+- 안전 분류기 오판으로 거절되면 Anthropic 권장 모델로 자동 재시도한다 (`fallbacks: "default"`)
+- 전사본은 Anthropic API로 전송된다 — 고객 비밀유지 약정이 있는 회의는 확인 후 쓴다
+
 ## 데모 데이터 원칙
 
 - 직원·건축주·금액·연락처·메일·회의 내용은 **모두 지어낸 값**이다. 이메일은 `example.com`, 전화는 `010-0000-xxxx`

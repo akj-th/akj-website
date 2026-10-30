@@ -2,7 +2,7 @@
 
 // 프로젝트 관련 작은 표시 부품 — 여러 화면에서 같이 쓴다
 import { STAGES, type Project, type ProjectStatus } from "@/data/projects";
-import { daysBetween } from "@/lib/format";
+import { daysBetween, isDate } from "@/lib/format";
 import { Badge, type Tone } from "@/components/ui";
 
 export const STATUS_TONE: Record<ProjectStatus, Tone> = { 진행: "info", 대기: "warn", 보류: "neutral", 완료: "ok" };
@@ -40,6 +40,7 @@ export function StageBar({ p, labels = false }: { p: Project; labels?: boolean }
 }
 
 export function Dday({ date, today }: { date: string; today: string }) {
+  if (!isDate(date)) return <span className="text-xs whitespace-nowrap text-warn">{date}</span>;
   const d = daysBetween(today, date);
   if (d < 0) return <span className="text-xs text-stone tabular-nums">지남</span>;
   const tone = d <= 3 ? "text-bad font-semibold" : d <= 14 ? "text-warn" : "text-mute";

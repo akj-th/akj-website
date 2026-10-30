@@ -41,9 +41,9 @@ export const MODULES: PortalModule[] = [
     next: ["DWG 뷰어 (사내 DXF 변환, 한글 SHX 대체)", "코멘트·구름표 마크업", "3DM 간단 수정 후 새 버전 저장"],
   },
   {
-    slug: "minutes", name: "회의록", group: "work", stage: 1, status: "demo",
+    slug: "minutes", name: "회의록", group: "work", stage: 1, status: "building",
     summary: "회의 녹음·메모를 올리면 할 일 중심 회의록이 프로젝트 폴더에 남는 곳",
-    next: ["전사본 → AKJ 회의록 규칙으로 자동 정리", "음성인식 서비스 연결", "Word·PDF 내보내기"],
+    next: ["음성인식 서비스 연결 (음성 파일 → 전사)", "Word·PDF 내보내기 (회의록 스킬 양식)", "프로젝트 폴더·위키 저장"],
   },
   {
     slug: "mail", name: "메일", group: "work", stage: 2, status: "demo",

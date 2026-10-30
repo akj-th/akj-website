@@ -2,8 +2,12 @@ const DOW = ["일", "월", "화", "수", "목", "금", "토"];
 
 const parse = (s: string) => new Date(s.length <= 10 ? `${s}T00:00:00` : s);
 
-/** 10.30 (금) */
+/** YYYY-MM-DD 로 시작하는지 — 회의록의 '기한 미정' 같은 글을 걸러낸다 */
+export const isDate = (s: string) => /^\d{4}-\d{2}-\d{2}/.test(s);
+
+/** 10.30 (금) — 날짜가 아니면 글 그대로 */
 export function fmtDay(s: string) {
+  if (!isDate(s)) return s;
   const d = parse(s);
   return `${d.getMonth() + 1}.${String(d.getDate()).padStart(2, "0")} (${DOW[d.getDay()]})`;
 }
