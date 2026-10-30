@@ -14,7 +14,8 @@ export const INFRA_STEPS: RoadmapStep[] = [
     items: [
       "메일 도메인 인증(SPF·DKIM·DMARC) 정비",
       "공개 사이트 시안 정리 (site/)",
-      "포털 틀 (portal/)",
+      "포털 화면 시안 — 가짜 데이터로 전 메뉴 (portal/)",
+      "3DM 뷰어",
     ],
   },
   {

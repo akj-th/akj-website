@@ -1,12 +1,22 @@
 @import "tailwindcss";
 
-/* 공개 사이트와 같은 흑백 기조. 포털은 오래 쓰는 화면이라 장식 없이 */
+/* 공개 사이트와 같은 흑백 기조. 상태 색은 배지·점에만 조금 쓴다 */
 @theme {
   --color-ink: #000000;
   --color-paper: #ffffff;
+  --color-surface: #f6f6f4;
+  --color-line: #e4e4e1;
   --color-stone: #9a9a96;
   --color-rule: #d9d9d6;
-  --color-mute: #5c5c59;
+  --color-mute: #6b6b67;
+  --color-ok: #1f7a4d;
+  --color-ok-bg: #e6f2eb;
+  --color-warn: #a2650f;
+  --color-warn-bg: #fbf0dc;
+  --color-bad: #b4322a;
+  --color-bad-bg: #f9e5e3;
+  --color-info: #2f55c4;
+  --color-info-bg: #e7ecfa;
   --font-sans: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
 }
 
@@ -15,7 +25,7 @@ html {
 }
 
 body {
-  background: var(--color-paper);
+  background: var(--color-surface);
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -25,4 +35,38 @@ body {
 :focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes drawer-in {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+.anim-toast {
+  animation: toast-in 0.18s ease-out;
+}
+.anim-drawer {
+  animation: drawer-in 0.18s ease-out;
+}
+.anim-fade {
+  animation: fade-in 0.15s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .anim-toast,
+  .anim-drawer,
+  .anim-fade {
+    animation: none;
+  }
 }

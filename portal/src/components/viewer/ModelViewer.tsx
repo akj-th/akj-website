@@ -21,7 +21,7 @@ const SHADES: [ShadeMode, string][] = [
   ["material", "재질"],
 ];
 
-const mb = (n: number) => `${(n / 1024 / 1024).toFixed(1)}MB`;
+const mb = (n: number) => (n < 1024 * 1024 ? `${Math.max(1, Math.round(n / 1024))}KB` : `${(n / 1024 / 1024).toFixed(1)}MB`);
 
 const SKIP_NAME: Record<string, string> = {
   Annotation: "문자·치수",
@@ -174,9 +174,9 @@ export default function ModelViewer() {
   const big = file && file.size > BIG_FILE;
 
   return (
-    <div className="flex h-[calc(100vh-10.5rem)] min-h-[520px] border border-ink">
-      <aside className="flex w-72 shrink-0 flex-col border-r border-ink text-sm">
-        <section className="flex flex-col gap-2 border-b border-ink p-3">
+    <div className="flex h-[calc(100vh-11.5rem)] min-h-[520px] border border-line bg-paper">
+      <aside className="flex w-72 shrink-0 flex-col border-r border-line text-sm">
+        <section className="flex flex-col gap-2 border-b border-line p-3">
           <button
             type="button"
             onClick={() => fileInput.current?.click()}
@@ -243,7 +243,7 @@ export default function ModelViewer() {
           )}
         </section>
 
-        <section className="flex flex-col gap-2 border-b border-ink p-3">
+        <section className="flex flex-col gap-2 border-b border-line p-3">
           <span className="text-xs text-mute">표시</span>
           <Seg
             items={SHADES}
