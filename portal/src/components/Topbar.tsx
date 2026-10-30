@@ -1,12 +1,14 @@
 "use client";
 
-import { Bell, ChevronDown, NotebookPen, Plane, Plus, Receipt, RotateCcw, Search } from "lucide-react";
+import { Bell, CalendarPlus, ChevronDown, NotebookPen, Plane, Plus, Receipt, RotateCcw, Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { currentApprover } from "@/data/approvals";
 import { DEMO_TODAY } from "@/data/demo";
 import { MAILS } from "@/data/mail";
+import { CHANNELS } from "@/data/messages";
+import { useUnread } from "@/lib/chat";
 import { MINUTES } from "@/data/minutes";
 import { ME, PEOPLE, person } from "@/data/people";
 import { PROJECTS } from "@/data/projects";
@@ -154,20 +156,27 @@ function Notifications() {
   const done = useDemo((s) => s.actionsDone);
   const mailRead = useDemo((s) => s.mailRead);
   const contracts = useDemo((s) => s.contracts);
+  const unread = useUnread();
 
   const items = useMemo(() => {
     const out: { href: string; text: string; when?: string }[] = [];
+    const msgs = Object.entries(unread).filter(([, n]) => n > 0);
+    if (msgs.length) {
+      const [top] = msgs.sort((a, b) => b[1] - a[1]);
+      const name = CHANNELS.find((c) => c.id === top[0])?.name;
+      out.push({ href: `/messages?c=${top[0]}`, text: `새 메시지 ${msgs.reduce((t, [, n]) => t + n, 0)}개 — ${name}${msgs.length > 1 ? ` 외 ${msgs.length - 1}개 채널` : ""}` });
+    }
     approvals
       .filter((a) => a.status === "진행" && currentApprover(a) === ME)
       .forEach((a) => out.push({ href: `/approvals?id=${a.id}`, text: `${person(a.requester)?.name} — ${a.title} 결재 요청`, when: fmtDay(a.created) }));
     MINUTES.flatMap((m) => m.actions)
       .filter((a) => a.owner === ME && !done[a.id] && daysBetween(DEMO_TODAY, a.due) <= 3)
       .forEach((a) => out.push({ href: "/minutes", text: `할 일 마감 임박 — ${a.task}`, when: fmtDay(a.due) }));
-    const unread = MAILS.filter((m) => !mailRead[m.id]).length;
-    if (unread) out.push({ href: "/mail", text: `읽지 않은 메일 ${unread}통` });
+    const unreadMail = MAILS.filter((m) => !mailRead[m.id]).length;
+    if (unreadMail) out.push({ href: "/mail", text: `읽지 않은 메일 ${unreadMail}통` });
     contracts.filter((c) => c.status === "서명 중").forEach((c) => out.push({ href: `/contracts?id=${c.id}`, text: `서명 대기 — ${c.title}` }));
     return out;
-  }, [approvals, done, mailRead, contracts]);
+  }, [approvals, done, mailRead, contracts, unread]);
 
   return (
     <Menu
@@ -207,6 +216,7 @@ export default function Topbar() {
     { href: "/approvals?new=expense", icon: Receipt, label: "지출결의" },
     { href: "/approvals?new=leave", icon: Plane, label: "휴가 신청" },
     { href: "/minutes?new=1", icon: NotebookPen, label: "회의록" },
+    { href: "/calendar?new=1", icon: CalendarPlus, label: "일정" },
   ];
 
   return (

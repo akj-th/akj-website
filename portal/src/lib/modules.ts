@@ -36,6 +36,16 @@ export const MODULES: PortalModule[] = [
     next: ["NAS 프로젝트 폴더 실제 연결", "볼트(_PROJECT.md) 정보와 동기화"],
   },
   {
+    slug: "messages", name: "메신저", group: "work", stage: 2, status: "demo",
+    summary: "프로젝트마다 채널 하나 — 대화와 결재·회의록·메일·일정 알림이 한곳에",
+    next: ["실시간 서버 (NAS)", "파일 첨부 → 프로젝트 폴더 저장", "휴대폰 알림", "자체 구축 대신 Mattermost 같은 사내 설치형과 연동하는 안도 비교"],
+  },
+  {
+    slug: "calendar", name: "캘린더", group: "work", stage: 2, status: "demo",
+    summary: "회의·현장·마감 일정, 휴가, 프로젝트 마감을 한 달력에",
+    next: ["서버 저장·공유 캘린더", "휴대폰 캘린더 구독(ICS)", "메일 서비스 캘린더와 동기화"],
+  },
+  {
     slug: "viewer", name: "도면·모델 뷰어", group: "work", stage: 1, status: "building",
     summary: "CAD·라이노 없이 웹에서 DWG·3DM을 열어 보고 표시하는 곳",
     next: ["DWG 뷰어 (사내 DXF 변환, 한글 SHX 대체)", "코멘트·구름표 마크업", "3DM 간단 수정 후 새 버전 저장"],

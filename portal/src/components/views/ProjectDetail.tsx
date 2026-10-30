@@ -1,6 +1,7 @@
 "use client";
 
-import { Box, ChevronRight, File, FileImage, FileText, Folder, FolderOpen, Paperclip } from "lucide-react";
+import { Box, ChevronRight, File, FileImage, FileText, Folder, FolderOpen, MessagesSquare, Paperclip } from "lucide-react";
+import { CHANNELS } from "@/data/messages";
 import Link from "next/link";
 import { useState } from "react";
 import { KIND_LABEL, total } from "@/data/approvals";
@@ -18,6 +19,16 @@ import { Avatar, Badge, Button, Card, CardHeader, Empty, PageHeader, Progress } 
 type Tab = "overview" | "files" | "mail" | "minutes" | "docs";
 
 const KIND_ICON = { folder: Folder, pdf: FileText, doc: FileText, xls: FileText, dwg: File, "3dm": Box, img: FileImage } as const;
+
+/** 파일 종류별 데스크톱 프로그램 — 실제 작업은 데스크톱에서, 포털은 찾고 보고 여는 곳 */
+const APP: Record<Exclude<FileNode["kind"], "folder">, string> = {
+  dwg: "AutoCAD",
+  "3dm": "Rhino",
+  img: "Photoshop",
+  pdf: "Acrobat",
+  doc: "Word",
+  xls: "Excel",
+};
 
 function FileBrowser({ p }: { p: Project }) {
   const tree = fileTree(p);
@@ -80,6 +91,7 @@ function FileBrowser({ p }: { p: Project }) {
           <ul className="divide-y divide-line">
             {children.map((f) => {
               const Icon = KIND_ICON[f.kind];
+              const app = f.kind === "folder" ? null : APP[f.kind];
               return (
                 <li key={f.name} className="flex items-center gap-3 px-4 py-2.5 text-sm">
                   <Icon size={16} className={f.kind === "folder" ? "" : "text-mute"} />
@@ -101,9 +113,14 @@ function FileBrowser({ p }: { p: Project }) {
                         뷰어로 열기
                       </Button>
                     ))}
-                  {f.kind !== "3dm" && f.kind !== "folder" && (
-                    <Button size="sm" variant="ghost" onClick={() => toast("NAS 연결 후 내려받을 수 있습니다")}>
-                      열기
+                  {app && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      title="NAS 구축 후 사내 연결 도우미로 데스크톱 프로그램에서 바로 연다"
+                      onClick={() => toast(`NAS 구축 후 ${app}에서 바로 엽니다 — 브라우저는 보안상 PC 프로그램을 직접 못 열어 사내 연결 도우미(akj-open)를 둔다`)}
+                    >
+                      {app}에서 열기
                     </Button>
                   )}
                 </li>
@@ -158,6 +175,11 @@ export default function ProjectDetail({ p }: { p: Project }) {
         }
         actions={
           <>
+            {CHANNELS.some((c) => c.project === p.code) && (
+              <Link href={`/messages?c=c-${p.code}`} className="inline-flex h-9 items-center gap-1.5 border border-line bg-paper px-3.5 text-sm font-medium hover:border-ink">
+                <MessagesSquare size={15} /> 채널
+              </Link>
+            )}
             <Button onClick={() => toast(`NAS 연결 후 \\\\AKJ-NAS\\Projects\\${p.code} 폴더를 엽니다`)}>
               <FolderOpen size={15} /> 폴더 열기
             </Button>

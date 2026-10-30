@@ -3,7 +3,9 @@
 import {
   Box,
   Calculator,
+  CalendarDays,
   Clock,
+  MessagesSquare,
   FolderKanban,
   LayoutDashboard,
   Mail,
@@ -22,9 +24,12 @@ import { ME } from "@/data/people";
 import { GROUPS, modulesInGroup } from "@/lib/modules";
 import { useDemo } from "@/lib/store";
 import Logo from "./Logo";
+import { useUnread } from "@/lib/chat";
 
 const ICON: Record<string, LucideIcon> = {
   projects: FolderKanban,
+  messages: MessagesSquare,
+  calendar: CalendarDays,
   viewer: Box,
   minutes: NotebookPen,
   mail: Mail,
@@ -61,9 +66,11 @@ function Item({ href, icon: Icon, label, count }: { href: string; icon: LucideIc
 export default function Sidebar() {
   const approvals = useDemo((s) => s.approvals);
   const mailRead = useDemo((s) => s.mailRead);
+  const unread = useUnread();
   const counts: Record<string, number> = {
     approvals: approvals.filter((a) => a.status === "진행" && currentApprover(a) === ME).length,
     mail: Object.values(mailRead).filter((r) => !r).length,
+    messages: Object.values(unread).reduce((t, n) => t + n, 0),
   };
 
   return (
