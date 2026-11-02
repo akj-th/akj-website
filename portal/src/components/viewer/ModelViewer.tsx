@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LayerInfo, Measurement, ModelInfo, ShadeMode, ViewName, ViewerScene } from "@/lib/viewer/scene";
 import { formatLength } from "@/lib/viewer/format";
+import { withBase } from "@/lib/base";
 
 type Status = "idle" | "loading" | "ready" | "error";
 
@@ -119,7 +120,7 @@ export default function ModelViewer() {
       if (src) {
         setStatus("loading");
         try {
-          const res = await fetch(src);
+          const res = await fetch(withBase(src));
           if (!res.ok) throw new Error(`파일을 받지 못했다 (${res.status})`);
           const name = decodeURIComponent(src.split("/").pop() || "model.3dm");
           await openBuffer(await res.arrayBuffer(), name);

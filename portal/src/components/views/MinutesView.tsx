@@ -9,6 +9,7 @@ import { SAMPLE_DRAFT, SAMPLE_REQUEST } from "@/data/minutes-sample";
 import { PEOPLE, person } from "@/data/people";
 import { PROJECTS, project } from "@/data/projects";
 import { fmtDay, fmtTime, isDate } from "@/lib/format";
+import { STATIC_DEMO, withBase } from "@/lib/base";
 import { minutesMarkdown } from "@/lib/minutes/markdown";
 import type { MinutesRequest } from "@/lib/minutes/prompt";
 import { undecidedCount, UNDECIDED, type MinutesDraft } from "@/lib/minutes/schema";
@@ -245,10 +246,15 @@ function NewMinutes({ open, onClose, onSaved }: { open: boolean; onClose: () => 
   }, [phase.k]);
 
   const run = async () => {
+    // 웹 데모(정적 파일)에는 AI 정리 서버가 없다 — 예시 결과로 흐름만 보여 준다
+    if (STATIC_DEMO) {
+      setPhase({ k: "error", error: "웹 데모에는 AI 정리 서버가 없습니다", hint: "NAS에 설치한 포털에서 API 키를 넣으면 실제로 정리합니다", noKey: true });
+      return;
+    }
     setPhase({ k: "loading", started: Date.now() });
     try {
       const p = project(code);
-      const res = await fetch("/api/minutes", {
+      const res = await fetch(withBase("/api/minutes"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...req, project: p ? `${p.code} ${p.name}` : req.project }),

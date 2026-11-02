@@ -3,6 +3,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Rhino3dmLoader } from "three/examples/jsm/loaders/3DMLoader.js";
+import { withBase } from "@/lib/base";
 import { formatLength } from "./format";
 
 // 라이노는 Z가 위다. 카메라·컨트롤을 만들기 전에 바꿔야 한다.
@@ -135,7 +136,7 @@ export class ViewerScene {
     el.appendChild(this.label);
 
     this.loader = new Rhino3dmLoader();
-    this.loader.setLibraryPath("/rhino3dm/");
+    this.loader.setLibraryPath(withBase("/rhino3dm/"));
 
     const c = this.renderer.domElement;
     c.addEventListener("pointerdown", this.onDown);
